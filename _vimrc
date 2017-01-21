@@ -23,6 +23,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'bling/vim-airline'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -125,6 +126,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""
 " COSMETIC STUFF
 """""""""""""""""""""""""""""""""""""""""
+
 ""Highlight over 80 characters
 ""highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 ""match OverLength /\%81v.\+/
