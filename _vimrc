@@ -15,17 +15,18 @@ set rtp+=%HOME%/vimfiles/bundle/Vundle.vim/
 call vundle#begin('%USERPROFILE%/vimfiles/bundle/')
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
+" {  Plugins
+    " let Vundle manage Vundle, required
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'scrooloose/nerdtree'
+    "Plugin 'Valloric/YouCompleteMe'
+    Plugin 'vim-syntastic/syntastic'
+    Plugin 'nathanaelkane/vim-indent-guides'
+    Plugin 'altercation/vim-colors-solarized'
+    Plugin 'bling/vim-airline'
+"}
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-"Plugin 'Valloric/YouCompleteMe'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'bling/vim-airline'
-
-" All of your Plugins must be added before the following line
+    " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
