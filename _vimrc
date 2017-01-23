@@ -62,23 +62,24 @@ inoremap <expr> >   strpart(getline('.'), col('.')-1,1) == ">" ? "\<Right>" : ">
 """""""""""""""""""""""""""""""""""""""""
 " CUSTOM SETTINGS
 """""""""""""""""""""""""""""""""""""""""
-
+set rnu
+set lbr
 set mouse=a
 
 syntax enable
 set background=dark
 colorscheme solarized
 
-set tabstop=4 shiftwidth=4 expandtab
+set tabstop=2 shiftwidth=2 expandtab
 set listchars=tab:>~,nbsp:_,trail:.,eol:$,extends:>,precedes:<
 set list
 set smarttab
 set smartindent
 set autoindent
 set number
-set colorcolumn=80
+set colorcolumn=81
 set number
-set guifont=Consolas:h15
+set guifont=Consolas:h12
 
 "Startup directory
 cd C:\Projects

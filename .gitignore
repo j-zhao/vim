@@ -2,3 +2,5 @@
 _vimrc~
 /vim80/*
 /vimfiles/*
+*.swp
+.gitignore~
