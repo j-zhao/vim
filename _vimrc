@@ -62,8 +62,8 @@ inoremap <expr> >   strpart(getline('.'), col('.')-1,1) == ">" ? "\<Right>" : ">
 """""""""""""""""""""""""""""""""""""""""
 " CUSTOM SETTINGS
 """""""""""""""""""""""""""""""""""""""""
-set rnu
-set lbr
+set relativenumber
+set linebreak
 set mouse=a
 
 syntax enable
