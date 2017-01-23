@@ -70,7 +70,7 @@ syntax enable
 set background=dark
 colorscheme solarized
 
-set tabstop=2 shiftwidth=2 expandtab
+set tabstop=4 shiftwidth=4 expandtab
 set listchars=tab:>~,nbsp:_,trail:.,eol:$,extends:>,precedes:<
 set list
 set smarttab
