@@ -103,7 +103,7 @@ set smarttab
 set smartindent
 set autoindent
 set number
-set colorcolumn=81
+set colorcolumn=121
 set number
 set guifont=Consolas:h12
 
