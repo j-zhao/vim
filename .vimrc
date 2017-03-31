@@ -19,9 +19,11 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'udalov/kotlin-vim'
 Plugin 'ervandew/supertab'
+Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'scrooloose/nerdtree'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'altercation/vim-colors-solarized'
@@ -61,6 +63,29 @@ inoremap    <  <><left>
 inoremap <expr> >   strpart(getline('.'), col('.')-1,1) == ">" ? "\<Right>" : ">"
 
 """""""""""""""""""""""""""""""""""""""""
+" Plugin Settings
+"""""""""""""""""""""""""""""""""""""""""
+
+" Rainbow Parens Always on
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+"Start NERDTree Automatically
+autocmd vimenter * NERDTree
+
+" Default Syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+"""""""""""""""""""""""""""""""""""""""""
 " CUSTOM SETTINGS
 """""""""""""""""""""""""""""""""""""""""
 set relativenumber
@@ -92,9 +117,6 @@ set enc=utf-8
 """""""""""""""""""""""""""""""""""""""""
 " DEVELOPER SETTINGS
 """""""""""""""""""""""""""""""""""""""""
-
-" Start NERDTree Automatically
-autocmd vimenter * NERDTree
 
 set directory=.,$TEMP
 set autowrite
