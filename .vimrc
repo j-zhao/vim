@@ -19,11 +19,12 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'udalov/kotlin-vim'
 Plugin 'ervandew/supertab'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'altercation/vim-colors-solarized'
@@ -75,7 +76,7 @@ au Syntax * RainbowParenthesesLoadBraces
 "Start NERDTree Automatically
 autocmd vimenter * NERDTree
 
-" Default Syntastic settings
+"
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
