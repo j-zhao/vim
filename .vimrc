@@ -30,7 +30,7 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'bling/vim-airline'
 "
-    " All of your Plugins must be added before the following line
+" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -76,9 +76,11 @@ au Syntax * RainbowParenthesesLoadBraces
 "Start NERDTree Automatically
 autocmd vimenter * NERDTree
 
-"Start indent guide
+"Indent Guides
 let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size=1
 
+"Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
