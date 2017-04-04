@@ -1,6 +1,6 @@
 """"""""""""""""""""""""""""""""""""""""""
 " JESSE ZHAO's VIMRC
-" Last modified: 1/20/2017
+" Last modified: 4/4/2017
 """"""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""
@@ -76,7 +76,9 @@ au Syntax * RainbowParenthesesLoadBraces
 "Start NERDTree Automatically
 autocmd vimenter * NERDTree
 
-"
+"Start indent guide
+let g:indent_guides_enable_on_vim_startup = 1
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -107,6 +109,7 @@ set number
 set colorcolumn=121
 set number
 set guifont=Consolas:h12
+set showcmd
 
 "Startup directory
 cd ~/Projects
