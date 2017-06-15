@@ -1,32 +1,46 @@
 """"""""""""""""""""""""""""""""""""""""""
 " JESSE ZHAO's VIMRC
-" Last modified: 1/20/2017
+" Last modified: 06-14-2017
 """"""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""
-" VUNDLE
+" Vundle
 """"""""""""""""""""""""""""""""""""""""""
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=%HOME%/vimfiles/bundle/Vundle.vim/
-call vundle#begin('%USERPROFILE%/vimfiles/bundle/')
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
-" {  Plugins
-    " let Vundle manage Vundle, required
-    Plugin 'VundleVim/Vundle.vim'
-    Plugin 'scrooloose/nerdtree'
-    "Plugin 'Valloric/YouCompleteMe'
-    Plugin 'vim-syntastic/syntastic'
-    Plugin 'nathanaelkane/vim-indent-guides'
-    Plugin 'altercation/vim-colors-solarized'
-    Plugin 'bling/vim-airline'
-"}
+"-----------------------------------------
 
-    " All of your Plugins must be added before the following line
+"""""""""""""""""""
+" VUNDLE Plugins
+"""""""""""""""""""
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'udalov/kotlin-vim'
+Plugin 'ervandew/supertab'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'scrooloose/nerdtree'
+"Plugin 'Valloric/YouCompleteMe'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'bling/vim-airline'
+"Plugin 'tpope/vim-surround'
+
+if !has ('nvim')
+    Plugin 'tpope/vim-sensible'
+endif
+
+" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -40,28 +54,93 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
+"-----------------------------------------
 
-source $VIMRUNTIME/vimrc_example.vim
-source $VIMRUNTIME/mswin.vim
-behave mswin
+""""""""""""""""""""""""""""""""""""""""""
+" Environment Configs
+""""""""""""""""""""""""""""""""""""""""""
+
+if has ('nvim')
+   set rtp+=/usr/share/vim/vim74
+else
+endif
+
+if has ('windows')
+    "Startup directory
+    "cd C:\Projects
+    "DirectX
+    set enc=utf-8
+    behave mswin
+    if !has ('nvim')
+        set renderoptions=type:directx,geom:1,taamode:1
+    endif
+endif
+
+if has ('unix')
+    "Startup directory
+    cd ~/Projects
+endif
+"-----------------------------------------
+
+""""""""""""""""""""""""""""""""""""""""""
+" Mappings
+""""""""""""""""""""""""""""""""""""""""""
 
 " Closes braces automatically
-inoremap { {<CR><BS>}<Esc>
-inoremap ( ()<Esc>
-inoremap " ""<Esc>
-inoremap [ []<Esc>
-inoremap < <><Esc>
-
 inoremap (  ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
 inoremap [  []<Left>
 inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
-inoremap    <  <><left>
-inoremap <expr> >   strpart(getline('.'), col('.')-1,1) == ">" ? "\<Right>" : ">"
+inoremap <  <><Left>
+inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
+inoremap {  {}<Left>
+inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
+inoremap '  ''<Left>
+inoremap <expr> <CR> strpart(getline('.'), col('.')-1, 1) == "}" ? "<CR><CR><Up><Tab>" : "<CR>"
+inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
+inoremap "  ""<Left>
+inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
+
+"-----------------------------------------
+
+""""""""""""""""""""""""""""""""""""""""""
+" Plugin Settings
+""""""""""""""""""""""""""""""""""""""""""
+
+" Rainbow Parens Always on
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+"Start NERDTree Automatically
+autocmd vimenter * NERDTree
+
+"Indent Guides
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size=1
+
+"Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+"Solarized
+g:solarized_contrast = "high"
+"-----------------------------------------
 
 """""""""""""""""""""""""""""""""""""""""
 " CUSTOM SETTINGS
 """""""""""""""""""""""""""""""""""""""""
+
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+
 set relativenumber
 set linebreak
 set mouse=a
@@ -71,30 +150,24 @@ set background=dark
 colorscheme solarized
 
 set tabstop=4 shiftwidth=4 expandtab
-set listchars=tab:>~,nbsp:_,trail:.,eol:$,extends:>,precedes:<
+set showbreak=↪\ 
+set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+"set listchars=eol:↲
+"set listchars=tab:>~,nbsp:_,trail:.,extends:>,precedes:<
+"set listchars=eol:$,
 set list
 set smarttab
-set smartindent
+"set smartindent
 set autoindent
-set number
-set colorcolumn=81
+set colorcolumn=121
 set number
 set guifont=Consolas:h12
-
-"Startup directory
-cd C:\Projects
-
-"DirectX
-set renderoptions=type:directx,geom:1,taamode:1
-set enc=utf-8
+set showcmd
+"-----------------------------------------
 
 """""""""""""""""""""""""""""""""""""""""
 " DEVELOPER SETTINGS
 """""""""""""""""""""""""""""""""""""""""
-
-" Start NERDTree Automatically
-autocmd vimenter * NERDTree
-
 set directory=.,$TEMP
 set autowrite
 """"Hotkeys for Java
@@ -124,6 +197,7 @@ if argc() == 2
   n
   e #
 endif
+"-----------------------------------------
 
 """""""""""""""""""""""""""""""""""""""""
 " COSMETIC STUFF
@@ -217,7 +291,6 @@ function! GuiTabToolTip()
   return tip
 endfunction
 set guitabtooltip=%{GuiTabToolTip()}
-""/
 
 set diffexpr=MyDiff()
 function MyDiff()
@@ -243,4 +316,4 @@ function MyDiff()
   endif
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
-
+"-----------------------------------------
