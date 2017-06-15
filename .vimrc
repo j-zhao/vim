@@ -11,7 +11,11 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
+if has ('win32' || 'win64')
+    set rtp+=%USERPROFILE%/vimfiles/bundle/Vundle.vim
+else
+    set rtp+=~/.vim/bundle/Vundle.vim
+endif
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
@@ -131,7 +135,7 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
 "Solarized
-g:solarized_contrast = "high"
+let g:solarized_contrast = "high"
 "-----------------------------------------
 
 """""""""""""""""""""""""""""""""""""""""
