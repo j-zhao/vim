@@ -1,5 +1,5 @@
 " Modeline and Notes {{{
-" vim: set sw=4 ts=4 sts=4 et tw=78 foldlevel=0 foldmethod=marker spell:
+    " vim: set foldmethod=marker foldlevel=0 et :
 " }}}
 
 """"""""""""""""""""""""""""""""
@@ -16,7 +16,7 @@
         filetype off                  " required
 
     " set the runtime path to include Vundle and initialize
-        if has ('win32' || 'win64')
+        if has('win32')
             set rtp+=%USERPROFILE%/vimfiles/bundle/Vundle.vim
         else
             set rtp+=~/.vim/bundle/Vundle.vim
@@ -32,19 +32,28 @@
         Plugin 'VundleVim/Vundle.vim'
 
         Plugin 'jistr/vim-nerdtree-tabs'
+        Plugin 'scrooloose/nerdtree'
         Plugin 'udalov/kotlin-vim'
         Plugin 'ervandew/supertab'
         Plugin 'kien/rainbow_parentheses.vim'
-        Plugin 'scrooloose/nerdtree'
         "Plugin 'Valloric/YouCompleteMe'
-        Plugin 'vim-syntastic/syntastic'
         Plugin 'nathanaelkane/vim-indent-guides'
         Plugin 'altercation/vim-colors-solarized'
         Plugin 'bling/vim-airline'
         Plugin 'tpope/vim-fugitive'
         "Plugin 'tpope/vim-surround'
+        Plugin 'tpope/vim-obsession'
+        Plugin 'vim-airline/vim-airline-themes'
+        Plugin 'vim-syntastic/syntastic'
 
-        if !has ('nvim')
+        if has('gui_running')
+        endif
+
+        if has('unix')
+            "Plugin 'Valloric/YouCompleteMe'
+        endif
+
+        if !has('nvim')
             Plugin 'tpope/vim-sensible'
         endif
 
@@ -65,27 +74,54 @@
     " }}}
 " }}}
 
+" Functions and AutoCommands {{{
+
+    " Autostart Obsession
+    autocmd VimEnter * call AutoSourceObsession()
+
+    augroup reload_vimrc
+        autocmd!
+        autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    augroup END
+
+    function! AutoSourceObsession()
+        if !argc() && empty(v:this_session) && filereadable('~/.vim/Obsession.vim') && !&modified
+            source ~/.vim/Obsession.vim
+            Obsession ~/Obsession.vim
+        else
+            Obsession ~/Obsession.vim
+        endif
+    endfunction
+
+    function! OpenVimrcs()
+        tabnew ~/Dropbox/Programming/Vim/.vimrc
+        vnew ~/Dropbox/Programming/Vim/_vimrc
+    endfunction
+" }}}
+
 " Environment Configs and Startup {{{
-    if has ('nvim')
+    if has('nvim')
        set rtp+=/usr/share/vim/vim74
     else
     endif
 
-    if has ('win32' || 'win64')
-        "Startup directory
-        "cd C:\Projects
-        "DirectX
+    if has('win32')
+        " Startup directory
+        cd C:\Projects
         set enc=utf-8
         behave mswin
-        if !has ('nvim')
-            set renderoptions=type:directx,geom:1,taamode:1
+        " DirectX
+        if !has('nvim')
+            set renderoptions=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
         endif
     endif
 
-    if has ('unix')
+    if has('unix')
         "Startup directory
         cd ~/Projects
     endif
+
+    " Startup
 " }}}
 
 " Mappings {{{
@@ -103,67 +139,103 @@
     inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
     inoremap "  ""<Left>
     inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
+
+    " Save/Open Sessions
+    "map <F2> :Obsess ~/Obsession.vim
+    "map <F3> :source ~/Obsession.vim
+    " Quick write session with F2
+    map <F2> :mksession! ~/.vim/Session.vim
+    map <F3> :source! ~/.vim/Session.vim
+    map <F4> :call OpenVimrcs()<CR>
 " }}}
 
-" Plugin Settings {{{
+" Plugin Settings and Cosmetics {{{
     " Rainbow Parens Always on
     au VimEnter * RainbowParenthesesToggle
     au Syntax * RainbowParenthesesLoadRound
     au Syntax * RainbowParenthesesLoadSquare
     au Syntax * RainbowParenthesesLoadBraces
 
-    " NERDTree
-    autocmd vimenter * NERDTree "Start NERDTree Automatically
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+        " NERDTree/NERDTreeTabs
+"    autocmd StdinReadPre * let s:std_in=1
+"    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
     map <C-n> :NERDTreeToggle<CR>
+    let g:nerdtree_tabs_open_on_console_startup=1
     let NERDTreeShowBookmarks=1
+    let g:nerdtree_tabs_synchronize_view=0
+    let g:nerdtree_tabs_synchronize_focus=0
+    let g:nerdtree_tabs_focus_on_files=1
+    let g:nerdtree_tabs_autofind=1
+    let g:nerdtree_tabs_open_on_console_startup=0
 
-    "Indent Guides
+    " Indent Guides
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_guide_size=1
 
-    "Syntastic
-    set statusline+=%#warningmsg#
-    set statusline+=%{{{SyntasticStatuslineFlag()}}}
-    set statusline+=%*
-
+    " Syntastic
     let g:syntastic_always_populate_loc_list = 1
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_check_on_open = 0
     let g:syntastic_check_on_wq = 0
 
-    "Solarized
-    let g:solarized_contrast = "high"
+    " Solarized
+    let g:solarized_termtrans=1
+    let g:solarized_termcolors=256
+    let g:solarized_contrast='high'
+
+    " Cosmetics
+    " Statusline
+    set laststatus=2            " always statusbar
+    "set statusline=%{getcwd()}: " pwd of vim
+    "set statusline+=\ %f%m%=    " relative path to filename, modified flag, RHS
+    "set statusline+=%c,         " char number
+    "set statusline+=%l/%L\ %y   " curr line/total line [filetype]
+    "set statusline+=%{fugitive#statusline()} " show current git branch with fugitive
+    "set statusline+=%#warningmsg#
+    "set statusline+=%{SyntasticStatuslineFlag()}
+    "set statusline+=%{ObsessionStatus('Obsessed','!Obsessed')}
+    "set statusline+=%*
+
+    " Airline
+    let g:airline_detect_modified=1
+    "let g:airline#extensions#tabline#enabled = 1
+    "let g:airline#extensions#tabline#left_sep = ' '
+    "let g:airline#extensions#tabline#left_alt_sep = '|'
 " }}}
 
 " Vim Customization {{{
-    source $VIMRUNTIME/vimrc_example.vim
-    source $VIMRUNTIME/mswin.vim
+    "source $VIMRUNTIME/vimrc_example.vim
+    "source $VIMRUNTIME/mswin.vim
 
     set noswapfile
-
     set relativenumber
     set linebreak
     set mouse=a
-
-    syntax enable
-    set background=dark
-    colorscheme solarized
-
+    set splitright
+    set splitbelow
     set tabstop=4 shiftwidth=4 expandtab
-    set showbreak=↪\ 
-    set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
-    "set listchars=eol:↲
-    "set listchars=tab:>~,nbsp:_,trail:.,extends:>,precedes:<
-    "set listchars=eol:$,
+    set showbreak=\\
+    set listchars=tab:>~,nbsp:_,trail:.,extends:>,precedes:<
     set list
     set smarttab
     "set smartindent
     set autoindent
     set colorcolumn=121
+    " Font
+    if has('win32')
+        set guifont=Consolas:h11:b
+    elseif has('unix')
+        set guifont=Menlo:h12
+    endif
     set number
-    set guifont=Consolas:h12
     set showcmd
+
+    "syntax enable
+    syntax on
+    set background=dark
+    colorscheme solarized
+
 " }}}
 
 " Developer Settings {{{
@@ -184,10 +256,6 @@
     "map <F5> :set makeprg=python\ %<CR>:make<CR>
     autocmd FileType python nnoremap <buffer> <F5> :exec '!python' shellescape(@%, 1)<CR>
 
-    " Save/Open Sessions
-    map <F2> :mksession! ~/vim_session <cr> " Quick write session with F2
-    map <F3> :source ~/vim_session <cr>     " And load session with F3
-
     set errorformat=%A:%f:%l:\ %m,%-Z%p^,%-C%.%#
 
     " If two files are loaded, switch to the alternate file, then back.
@@ -199,17 +267,13 @@
 " }}}
 
 " Cosmetic Stuff {{{
+
+    " Syntax Highlighting {{{
+        autocmd BufNewFile,BufRead *.ion  set syntax=java
+    " }}}
     "Highlight over 80 characters
     "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
     "match OverLength /\%81v.\+/
-
-    " statusline
-    set laststatus=2            " always statusbar
-    set statusline=%{getcwd()}: " pwd of vim
-    set statusline+=\ %f%m%=    " relative path to filename, modified flag, RHS
-    set statusline+=%c,         " char number
-    set statusline+=%l/%L\ %y   " curr line/total line [filetype]
-    set statusline+=%{fugitive#statusline()} " show current git branch with fugitive
 
     " if persistent_undo, configure a directory for it
     if has("persistent_undo")
@@ -219,7 +283,8 @@
 
     " always show tabline (2) or only show when multiple (1)
     " Show tab numbers
-    set showtabline=2 " always show tabs in gvim, but not vim
+    set showtabline=2
+    " always show tabs in gvim, but not vim
     " set up tab labels with tab number, buffer name, number of windows
     function! GuiTabLabel()
       let label = ''
@@ -287,7 +352,7 @@
     set guitabtooltip=%{GuiTabToolTip()}
 
     set diffexpr=MyDiff()
-    function MyDiff()
+    function! MyDiff()
       let opt = '-a --binary '
       if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
       if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
@@ -311,3 +376,4 @@
       silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
     endfunction
 " }}}
+
