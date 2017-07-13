@@ -32,19 +32,21 @@
         Plugin 'VundleVim/Vundle.vim'
 
         Plugin 'jistr/vim-nerdtree-tabs'
-        Plugin 'scrooloose/nerdtree'
         Plugin 'udalov/kotlin-vim'
         Plugin 'ervandew/supertab'
         Plugin 'kien/rainbow_parentheses.vim'
+        Plugin 'scrooloose/nerdtree'
         "Plugin 'Valloric/YouCompleteMe'
         Plugin 'nathanaelkane/vim-indent-guides'
         Plugin 'altercation/vim-colors-solarized'
         Plugin 'bling/vim-airline'
         Plugin 'tpope/vim-fugitive'
         "Plugin 'tpope/vim-surround'
-        Plugin 'tpope/vim-obsession'
+        "Plugin 'tpope/vim-obsession'
         Plugin 'vim-airline/vim-airline-themes'
         Plugin 'vim-syntastic/syntastic'
+        Plugin 'xolox/vim-session'
+        Plugin 'xolox/vim-misc'
 
         if has('gui_running')
         endif
@@ -77,24 +79,31 @@
 " Functions and AutoCommands {{{
 
     " Autostart Obsession
-    autocmd VimEnter * call AutoSourceObsession()
+    "autocmd VimEnter * call AutoSourceObsession()
+"    autocmd VimEnter * call VimSessionAutoStart()
 
     augroup reload_vimrc
         autocmd!
         autocmd BufWritePost $MYVIMRC source $MYVIMRC
     augroup END
 
-    function! AutoSourceObsession()
-        if !argc() && empty(v:this_session) && filereadable('~/.vim/Obsession.vim') && !&modified
-            source ~/.vim/Obsession.vim
-            Obsession ~/Obsession.vim
-        else
-            Obsession ~/Obsession.vim
-        endif
-    endfunction
+"    function! VimSessionAutoStart()
+"        OpenSession
+"        SaveSession
+"    endfunction
+
+"    function! AutoSourceObsession()
+"        if !argc() && empty(v:this_session) && filereadable('~/.vim/Obsession.vim') && !&modified
+"            source ~/.vim/Obsession.vim
+"            Obsession ~/Obsession.vim
+"        else
+"            Obsession ~/Obsession.vim
+"        endif
+"    endfunction
 
     function! OpenVimrcs()
-        tabnew ~/Dropbox/Programming/Vim/.vimrc
+        tabnew $MYVIMRC
+        vnew ~/Dropbox/Programming/Vim/.vimrc
         vnew ~/Dropbox/Programming/Vim/_vimrc
     endfunction
 " }}}
@@ -134,8 +143,8 @@
     inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
     inoremap {  {}<Left>
     inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
-    inoremap '  ''<Left>
-    inoremap <expr> <CR> strpart(getline('.'), col('.')-1, 1) == "}" ? "<CR><CR><Up><Tab>" : "<CR>"
+"    inoremap <expr> <CR> strpart(getline('.'), col('.')-1, 1) == '}' ? '<CR><CR><Up><Tab>' : '<CR>'
+"    inoremap '  ''<Left>
     inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
     inoremap "  ""<Left>
     inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
@@ -144,8 +153,10 @@
     "map <F2> :Obsess ~/Obsession.vim
     "map <F3> :source ~/Obsession.vim
     " Quick write session with F2
-    map <F2> :mksession! ~/.vim/Session.vim
-    map <F3> :source! ~/.vim/Session.vim
+    "map <F2> :mksession! ~/.vim/Session.vim
+    "map <F3> :source ~/.vim/Session.vim
+    map <F2> :SaveSession
+    map <F3> :OpenSession
     map <F4> :call OpenVimrcs()<CR>
 " }}}
 
@@ -157,17 +168,15 @@
     au Syntax * RainbowParenthesesLoadBraces
 
         " NERDTree/NERDTreeTabs
-"    autocmd StdinReadPre * let s:std_in=1
-"    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-    map <C-n> :NERDTreeToggle<CR>
+    "autocmd StdinReadPre * let s:std_in=1
+    "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
     let g:nerdtree_tabs_open_on_console_startup=1
+    map <C-n> :NERDTreeToggle<CR>
     let NERDTreeShowBookmarks=1
     let g:nerdtree_tabs_synchronize_view=0
     let g:nerdtree_tabs_synchronize_focus=0
     let g:nerdtree_tabs_focus_on_files=1
     let g:nerdtree_tabs_autofind=1
-    let g:nerdtree_tabs_open_on_console_startup=0
 
     " Indent Guides
     let g:indent_guides_enable_on_vim_startup = 1
@@ -181,8 +190,11 @@
 
     " Solarized
     let g:solarized_termtrans=1
-    let g:solarized_termcolors=256
-    let g:solarized_contrast='high'
+"    let g:solarized_termcolors=256
+"    let g:solarized_contrast='high'
+
+    " Vim-Session
+    let g:session_autosave='yes'
 
     " Cosmetics
     " Statusline
@@ -251,7 +263,7 @@
     map <F10> :!javac %<CR>
     map <F11> :!java %:r
 
-    """"Hotkeys for Python
+    " Hotkeys for Python
     " F5/F6 to make with Python/run
     "map <F5> :set makeprg=python\ %<CR>:make<CR>
     autocmd FileType python nnoremap <buffer> <F5> :exec '!python' shellescape(@%, 1)<CR>
