@@ -7,7 +7,7 @@
 """"""""""""""""""""""""""""""""
 "   Author: Jesse Zhao
 "   github.com/j-zhao
-"   Last Modified: 06-15-2017
+"   Last Modified: 07-18-2017
 """"""""""""""""""""""""""""""""
 
 " Vundle, and Plugins {{{
@@ -143,16 +143,16 @@
     inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
     inoremap {  {}<Left>
     inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
-"    inoremap <expr> <CR> strpart(getline('.'), col('.')-1, 1) == '}' ? '<CR><CR><Up><Tab>' : '<CR>'
+    inoremap <expr> <CR> strpart(getline('.'), col('.')-1, 1) == '}' ? '<CR><CR><Up><Tab>' : '<CR>'
 "    inoremap '  ''<Left>
-    inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
+"    inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == '\'' ? '\<Right>' : '\'\'\<Left>'
     inoremap "  ""<Left>
     inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
 
     if has('win32')
         nmap <C-a> ggVG
-        vmap <C-c> "+y
-        vmap <C-v> "+p
+        map <C-c> "+y
+        map <C-v> "+p
     endif
 
     " Save/Open Sessions
