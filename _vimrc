@@ -149,6 +149,12 @@
     inoremap "  ""<Left>
     inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
 
+    if has('win32')
+        nmap <C-a> ggVG
+        vmap <C-c> "+y
+        vmap <C-v> "+p
+    endif
+
     " Save/Open Sessions
     "map <F2> :Obsess ~/Obsession.vim
     "map <F3> :source ~/Obsession.vim
@@ -157,7 +163,7 @@
     "map <F3> :source ~/.vim/Session.vim
     map <F2> :SaveSession
     map <F3> :OpenSession
-    map <F4> :call OpenVimrcs()<CR>
+    map <F4> :call OpenVimrcs()
 " }}}
 
 " Plugin Settings and Cosmetics {{{
@@ -227,7 +233,7 @@
     set splitright
     set splitbelow
     set tabstop=4 shiftwidth=4 expandtab
-    set showbreak=\\
+"    set showbreak=\\
     set listchars=tab:>~,nbsp:_,trail:.,extends:>,precedes:<
     set list
     set smarttab

@@ -143,11 +143,17 @@
     inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
     inoremap {  {}<Left>
     inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
-    inoremap <expr> <CR> strpart(getline('.'), col('.')-1, 1) == '}' ? '<CR><CR><Up><Tab>' : '<CR>'
+"    inoremap <expr> <CR> strpart(getline('.'), col('.')-1, 1) == '}' ? '<CR><CR><Up><Tab>' : '<CR>'
+"    inoremap '  ''<Left>
+    inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
     inoremap "  ""<Left>
     inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
-"    inoremap '  ''<Left>
-"    inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == '\'' ? '\<Right>' : '\'\'\<Left>'
+
+    if has('win32')
+        nmap <C-a> ggVG
+        vmap <C-c> "+y
+        vmap <C-v> "+p
+    endif
 
     " Save/Open Sessions
     "map <F2> :Obsess ~/Obsession.vim
@@ -227,7 +233,7 @@
     set splitright
     set splitbelow
     set tabstop=4 shiftwidth=4 expandtab
-    set showbreak=\\
+"    set showbreak=\\
     set listchars=tab:>~,nbsp:_,trail:.,extends:>,precedes:<
     set list
     set smarttab
