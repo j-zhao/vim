@@ -31,22 +31,26 @@
         " let Vundle manage Vundle, required
         Plugin 'VundleVim/Vundle.vim'
 
-        Plugin 'jistr/vim-nerdtree-tabs'
         Plugin 'udalov/kotlin-vim'
         Plugin 'ervandew/supertab'
         Plugin 'kien/rainbow_parentheses.vim'
         Plugin 'scrooloose/nerdtree'
+        Plugin 'jistr/vim-nerdtree-tabs'
         "Plugin 'Valloric/YouCompleteMe'
         Plugin 'nathanaelkane/vim-indent-guides'
         Plugin 'altercation/vim-colors-solarized'
-        Plugin 'bling/vim-airline'
+        Plugin 'vim-airline/vim-airline'
+        Plugin 'vim-airline/vim-airline-themes'
         Plugin 'tpope/vim-fugitive'
         "Plugin 'tpope/vim-surround'
         "Plugin 'tpope/vim-obsession'
-        Plugin 'vim-airline/vim-airline-themes'
+        "Plugin 'tpope/vim-sleuth'
+        Plugin 'ciaranm/detectindent'
         Plugin 'vim-syntastic/syntastic'
         Plugin 'xolox/vim-session'
         Plugin 'xolox/vim-misc'
+        Plugin 'airblade/vim-gitgutter'
+"        Plugin 'tomasr/molokai'
 
         if has('gui_running')
         endif
@@ -103,8 +107,13 @@
 
     function! OpenVimrcs()
         tabnew $MYVIMRC
-        vnew ~/Dropbox/Programming/Vim/.vimrc
-        vnew ~/Dropbox/Programming/Vim/_vimrc
+        if has ('unix')
+            vnew ~/Dropbox/Programming/Vim/.vimrc
+            vnew ~/Dropbox/Programming/Vim/_vimrc
+        elseif has ('win32')
+            vnew ~/Dropbox/Programming/Vim/_vimrc
+            vnew ~/Dropbox/Programming/Vim/.vimrc
+        endif
     endfunction
 " }}}
 
@@ -177,10 +186,10 @@
     "autocmd StdinReadPre * let s:std_in=1
     "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
     let g:nerdtree_tabs_open_on_console_startup=1
-    map <C-n> :NERDTreeToggle<CR>
+    map <C-n> :NERDTreeTabsToggle<CR>
     let NERDTreeShowBookmarks=1
     let g:nerdtree_tabs_synchronize_view=0
-    let g:nerdtree_tabs_synchronize_focus=0
+    let g:nerdtree_tabs_synchronize_focus=1
     let g:nerdtree_tabs_focus_on_files=1
     let g:nerdtree_tabs_autofind=1
 
@@ -202,6 +211,12 @@
     " Vim-Session
     let g:session_autosave='yes'
 
+    " GitGutter
+    set updatetime=250
+
+    " DetectIndent
+    autocmd BufReadPost * :DetectIndent
+
     " Cosmetics
     " Statusline
     set laststatus=2            " always statusbar
@@ -217,16 +232,22 @@
 
     " Airline
     let g:airline_detect_modified=1
+
+    " Airline Theme
+    let g:airline_solarized_bg='dark'
+    let g:airline_powerline_fonts = 1
     "let g:airline#extensions#tabline#enabled = 1
-    "let g:airline#extensions#tabline#left_sep = ' '
-    "let g:airline#extensions#tabline#left_alt_sep = '|'
+"    let g:airline#extensions#tabline#left_sep = ' '
+"    let g:airline#extensions#tabline#left_alt_sep = '|'
 " }}}
 
 " Vim Customization {{{
     "source $VIMRUNTIME/vimrc_example.vim
     "source $VIMRUNTIME/mswin.vim
+    scriptencoding utf-8
+    set encoding=utf-8
 
-    set noswapfile
+"    set noswapfile
     set relativenumber
     set linebreak
     set mouse=a
@@ -234,17 +255,27 @@
     set splitbelow
     set tabstop=4 shiftwidth=4 expandtab
 "    set showbreak=\\
-    set listchars=tab:>~,nbsp:_,trail:.,extends:>,precedes:<
+"    set listchars=tab:>~,nbsp:_,trail:.,extends:>,precedes:<
+    if has('gui_running')
+        set showbreak=↪\
+"        set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+        set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+    else
+        set listchars=tab:>~,nbsp:_,trail:.,extends:>,precedes:<
+    endif
     set list
     set smarttab
     "set smartindent
     set autoindent
     set colorcolumn=121
     " Font
-    if has('win32')
-        set guifont=Consolas:h11:b
-    elseif has('unix')
-        set guifont=Menlo:h12
+    if has ('win32')
+"        set guifont=Consolas:h11
+        set guifont=Fira\ Code\ Retina:h11,Fira\ Code:h11,Consolas:h11
+    elseif has ('macunix')
+"        set guifont=Menlo:h12
+        set macligatures
+        set guifont=Fira\ Code\ Retina:h12,Fira\ Code:h12,Menlo:h12,Consolas:h12
     endif
     set number
     set showcmd
@@ -257,7 +288,8 @@
 " }}}
 
 " Developer Settings {{{
-    set directory=.,$TEMP
+"    set directory=.,$TEMP
+    set directory^=$HOME/.vim/tmp//
     set autowrite
     """"Hotkeys for Java
     " F9/F10 to make with javac/compile.
@@ -268,6 +300,28 @@
     map <F9> :make<CR>
     map <F10> :!javac %<CR>
     map <F11> :!java %:r
+
+    " Smooth Scrolling
+"    function SmoothScroll(up)
+"        if a:up
+"            let scrollaction="\"
+"        else
+"            let scrollaction="\"
+"        endif
+"        exec "norm " . scrollaction
+"        redraw
+"        let counter=1
+"        while counter<&scroll
+"            let counter+=1
+"            sleep 10m
+"            redraw
+"            exec "norm " . scrollaction
+"        endwhile
+"    endfunction
+"    nnoremap  :call SmoothScroll(1)
+"    nnoremap  :call SmoothScroll(0)
+"    inoremap  :call SmoothScroll(1)i
+"    inoremap  :call SmoothScroll(0)i
 
     " Hotkeys for Python
     " F5/F6 to make with Python/run
