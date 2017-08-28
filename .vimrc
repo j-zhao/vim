@@ -7,7 +7,7 @@
 """"""""""""""""""""""""""""""""
 "   Author: Jesse Zhao
 "   github.com/j-zhao
-"   Last Modified: 07-18-2017
+"   Last Modified: 08-28-2017
 """"""""""""""""""""""""""""""""
 
 " Vundle, and Plugins {{{
@@ -125,7 +125,7 @@
 
     if has('win32')
         " Startup directory
-        cd C:\Projects
+        cd D:\Projects
         set enc=utf-8
         behave mswin
         " DirectX
@@ -158,8 +158,8 @@
     inoremap "  ""<Left>
     inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
 
-    if has('win32')
-        nmap <C-a> ggVG
+    if !has('macunix')
+        nmap <C-a> ggVG$
         map <C-c> "+y
         map <C-v> "+p
     endif
@@ -185,13 +185,13 @@
         " NERDTree/NERDTreeTabs
     "autocmd StdinReadPre * let s:std_in=1
     "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-    let g:nerdtree_tabs_open_on_console_startup=1
     map <C-n> :NERDTreeTabsToggle<CR>
+    let g:nerdtree_tabs_open_on_console_startup=0
     let NERDTreeShowBookmarks=1
-    let g:nerdtree_tabs_synchronize_view=0
     let g:nerdtree_tabs_synchronize_focus=1
     let g:nerdtree_tabs_focus_on_files=1
     let g:nerdtree_tabs_autofind=1
+    let g:nerdtree_tabs_synchronize_view=0
 
     " Indent Guides
     let g:indent_guides_enable_on_vim_startup = 1
@@ -247,6 +247,16 @@
     scriptencoding utf-8
     set encoding=utf-8
 
+    " Swap Files
+    "    set directory=.,$TEMP
+
+    if has ('win32')
+        set directory^=$HOME/tmp//
+    else
+        set directory^=~/.vim/tmp//
+    endif
+"    set directory^=HOME/tmp//
+
 "    set noswapfile
     set relativenumber
     set linebreak
@@ -275,7 +285,8 @@
     elseif has ('macunix')
 "        set guifont=Menlo:h12
         set macligatures
-        set guifont=Fira\ Code\ Retina:h12,Fira\ Code:h12,Menlo:h12,Consolas:h12
+    elseif has ('unix')
+        set guifont=Fira\ Mono\ Regular:h12,Fira\ Code\ Retina:h12,Fira\ Code:h12,Menlo:h12,Consolas:h12
     endif
     set number
     set showcmd
@@ -288,9 +299,7 @@
 " }}}
 
 " Developer Settings {{{
-"    set directory=.,$TEMP
-    set directory^=$HOME/.vim/tmp//
-    set autowrite
+    "set autowrite
     """"Hotkeys for Java
     " F9/F10 to make with javac/compile.
     " F5 to run file.
