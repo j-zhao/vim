@@ -7,7 +7,7 @@
 """"""""""""""""""""""""""""""""
 "   Author: Jesse Zhao
 "   github.com/j-zhao
-"   Last Modified: 08-28-2017
+"   Last Modified: 04-18-2018
 """"""""""""""""""""""""""""""""
 
 " Vundle, and Plugins {{{
@@ -46,22 +46,25 @@
         "Plugin 'tpope/vim-obsession'
         "Plugin 'tpope/vim-sleuth'
         Plugin 'ciaranm/detectindent'
-        Plugin 'vim-syntastic/syntastic'
+        "Plugin 'vim-syntastic/syntastic'
         Plugin 'xolox/vim-session'
         Plugin 'xolox/vim-misc'
         Plugin 'airblade/vim-gitgutter'
+        Plugin 'dzeban/vim-log-syntax'
+        Plugin 'scrooloose/nerdcommenter'
+        "Plugin 'leafgarland/typescript-vim'
+        Plugin 'tpope/vim-sensible'
 "        Plugin 'tomasr/molokai'
 
         if has('gui_running')
         endif
 
         if has('unix')
-            "Plugin 'Valloric/YouCompleteMe'
+            Plugin 'Valloric/YouCompleteMe'
         endif
 
-        if !has('nvim')
-            Plugin 'tpope/vim-sensible'
-        endif
+        "if !has('nvim')
+        "endif
 
         " All of your Plugins must be added before the following line
         call vundle#end()            " required
@@ -111,8 +114,8 @@
             vnew ~/Dropbox/Programming/Vim/.vimrc
             vnew ~/Dropbox/Programming/Vim/_vimrc
         elseif has ('win32')
-            vnew ~/Dropbox/Programming/Vim/_vimrc
-            vnew ~/Dropbox/Programming/Vim/.vimrc
+            vnew D:/Dropbox/Programming/Vim/_vimrc
+            vnew D:/Dropbox/Programming/Vim/.vimrc
         endif
     endfunction
 " }}}
@@ -128,6 +131,7 @@
         cd D:\Projects
         set enc=utf-8
         behave mswin
+        set directory^=$HOME/tmp
         " DirectX
         if !has('nvim')
             set renderoptions=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
@@ -136,6 +140,7 @@
 
     if has('unix')
         "Startup directory
+        set t_BE=
         cd ~/Projects
     endif
 
@@ -239,6 +244,11 @@
     "let g:airline#extensions#tabline#enabled = 1
 "    let g:airline#extensions#tabline#left_sep = ' '
 "    let g:airline#extensions#tabline#left_alt_sep = '|'
+
+    " NERDCommenter
+    let g:NERDCompactSexyComs = 1
+    let g:NERDCommentEmptyLines = 1
+
 " }}}
 
 " Vim Customization {{{
@@ -257,7 +267,7 @@
     endif
 "    set directory^=HOME/tmp//
 
-"    set noswapfile
+    set noswapfile
     set relativenumber
     set linebreak
     set mouse=a
@@ -281,10 +291,12 @@
     " Font
     if has ('win32')
 "        set guifont=Consolas:h11
-        set guifont=Fira\ Code\ Retina:h11,Fira\ Code:h11,Consolas:h11
+        set guifont=Fira\ Code:h11,Consolas:h11
     elseif has ('macunix')
 "        set guifont=Menlo:h12
         set macligatures
+    elseif has ('macunix')
+        set guifont=Fira\ Code\ Retina:h12,Fira\ Code:h12, Menlo:h12
     elseif has ('unix')
         set guifont=Fira\ Mono\ Regular:h12,Fira\ Code\ Retina:h12,Fira\ Code:h12,Menlo:h12,Consolas:h12
     endif
