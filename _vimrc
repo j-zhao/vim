@@ -54,7 +54,7 @@
         Plugin 'scrooloose/nerdcommenter'
         "Plugin 'leafgarland/typescript-vim'
         Plugin 'tpope/vim-sensible'
-"        Plugin 'tomasr/molokai'
+        "Plugin 'tomasr/molokai'
 
         if has('gui_running')
         endif
@@ -295,7 +295,6 @@
     elseif has ('macunix')
 "        set guifont=Menlo:h12
         set macligatures
-    elseif has ('macunix')
         set guifont=Fira\ Code\ Retina:h12,Fira\ Code:h12, Menlo:h12
     elseif has ('unix')
         set guifont=Fira\ Mono\ Regular:h12,Fira\ Code\ Retina:h12,Fira\ Code:h12,Menlo:h12,Consolas:h12
